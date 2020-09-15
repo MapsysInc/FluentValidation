@@ -32,15 +32,6 @@ namespace FluentValidation.Validators {
 		//TODO: For FV 10 make this an explicit implementation.
 		public PropertyValidatorOptions<T,TProperty> Options => this;
 
-		[Obsolete("This constructor is deprecated and will be removed in FluentValidation 10. Either use the constructor that takes a string, or override the GetDefaultMessageTemplate method.")]
-		protected PropertyValidator(IStringSource errorMessageSource) {
-			if(errorMessageSource == null) errorMessageSource = new StaticStringSource("No default error message has been specified.");
-			else if (errorMessageSource is LanguageStringSource l && l.ErrorCodeFunc == null)
-				l.ErrorCodeFunc = ctx => ErrorCodeSource?.GetString(ctx);
-
-			ErrorMessageSource = errorMessageSource;
-		}
-
 		protected PropertyValidator(string errorMessage) {
 			SetErrorMessage(errorMessage);
 		}

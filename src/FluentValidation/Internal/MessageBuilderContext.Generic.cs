@@ -9,17 +9,9 @@
 		public MessageBuilderContext(PropertyValidatorContext<T,TProperty> innerContext, IPropertyValidator<T,TProperty> propertyValidator) {
 			_innerContext = innerContext;
 			PropertyValidator = propertyValidator;
-			// TODO: For backwards compatibility (remove in FV10).
-#pragma warning disable 618
-			ErrorSource = PropertyValidator.Options.ErrorMessageSource;
-#pragma warning restore 618
 		}
 
-
 		public IPropertyValidator<T,TProperty> PropertyValidator { get; }
-
-		[Obsolete("This property is deprecated and will be removed in FluentValidation 10.")]
-		public IStringSource ErrorSource { get; }
 
 		public IValidationContext ParentContext => _innerContext.ParentContext;
 
@@ -46,6 +38,5 @@
 		public static implicit operator PropertyValidatorContext<T,TProperty>(MessageBuilderContext<T,TProperty> ctx) {
 			return ctx._innerContext;
 		}
-
 	}
 }
