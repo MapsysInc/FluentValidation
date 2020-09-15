@@ -27,7 +27,9 @@
 		}
 
 		public override IEnumerable<ValidationFailure> Validate(PropertyValidatorContext context) {
+#pragma warning disable 618
 			var results = _innerValidator.Validate(context).ToList();
+#pragma warning restore 618
 			if (!results.Any()) return results;
 			var errorMessage = results.First().ErrorMessage;
 			_onFailure((T) context.InstanceToValidate, context, errorMessage);
@@ -35,7 +37,9 @@
 		}
 
 		public override async Task<IEnumerable<ValidationFailure>> ValidateAsync(PropertyValidatorContext context, CancellationToken cancellation) {
+#pragma warning disable 618
 			var results = (await _innerValidator.ValidateAsync(context, cancellation)).ToList();
+#pragma warning restore 618
 			if (!results.Any()) return results;
 			var errorMessage = results.First().ErrorMessage;
 			_onFailure((T) context.InstanceToValidate, context, errorMessage);

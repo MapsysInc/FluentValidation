@@ -43,6 +43,7 @@ namespace FluentValidation {
 		/// </summary>
 		/// <param name="context">Validation Context</param>
 		/// <returns>A collection of validation failures</returns>
+		[Obsolete("Non-generic Validate methods will be removed in FluentValidation 10. Use the generic version of IValidationRule instead.")]
 		IEnumerable<ValidationFailure> Validate(IValidationContext context);
 
 		/// <summary>
@@ -51,13 +52,14 @@ namespace FluentValidation {
 		/// <param name="context">Validation Context</param>
 		/// <param name="cancellation">Cancellation token</param>
 		/// <returns>A collection of validation failures</returns>
+		[Obsolete("Non-generic Validate methods will be removed in FluentValidation 10. Use the generic version of IValidationRule instead.")]
 		Task<IEnumerable<ValidationFailure>> ValidateAsync(IValidationContext context, CancellationToken cancellation);
 
 		/// <summary>
 		/// Applies a condition to either all the validators in the rule, or the most recent validator in the rule chain.
 		/// </summary>
 		/// <param name="predicate">The condition to apply</param>
-		/// <param name="applyConditionTo">Indicates whether the condition should be applied to all validators in the rule, or only the current one</param>
+		/// <param name="applyConditionTo">Indicates whether the condition should be applied to all validators in the rule, or only the current one</param>		[Obsolete("Non-generic Validate methods will be removed in FluentValidation 10. Use the generic version of IValidationRule instead.")]
 		void ApplyCondition(Func<PropertyValidatorContext, bool> predicate, ApplyConditionTo applyConditionTo = ApplyConditionTo.AllValidators);
 
 		/// <summary>

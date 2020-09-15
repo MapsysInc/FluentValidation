@@ -334,7 +334,9 @@ namespace FluentValidation.Internal {
 			}
 			else {
 				foreach (var dependentRule in DependentRules) {
+#pragma warning disable 618
 					foreach (var failure in dependentRule.Validate(context)) {
+#pragma warning restore 618
 						yield return failure;
 					}
 				}
@@ -432,7 +434,9 @@ namespace FluentValidation.Internal {
 
 			foreach (var rule in DependentRules) {
 				cancellation.ThrowIfCancellationRequested();
+#pragma warning disable 618
 				failures.AddRange(await rule.ValidateAsync(context, cancellation));
+#pragma warning restore 618
 			}
 
 			return failures;
@@ -459,7 +463,9 @@ namespace FluentValidation.Internal {
 			}
 			if (!validator.Options.InvokeCondition(propertyContext)) return Enumerable.Empty<ValidationFailure>();
 			if (!await validator.Options.InvokeAsyncCondition(propertyContext, cancellation)) return Enumerable.Empty<ValidationFailure>();
+#pragma warning disable 618
 			return await validator.ValidateAsync(propertyContext, cancellation);
+#pragma warning restore 618
 		}
 
 		/// <summary>
@@ -477,7 +483,9 @@ namespace FluentValidation.Internal {
 #pragma warning restore 618
 			}
 			if (!validator.Options.InvokeCondition(propertyContext)) return Enumerable.Empty<ValidationFailure>();
+#pragma warning disable 618
 			return validator.Validate(propertyContext);
+#pragma warning restore 618
 		}
 
 		/// <summary>

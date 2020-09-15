@@ -143,7 +143,9 @@ namespace FluentValidation.Tests {
 
 			builder.Rule.Validate(new ValidationContext<Person>(person, new PropertyChain(), new DefaultValidatorSelector())).ToList();
 
+#pragma warning disable 618
 			validator.Verify(x => x.Validate(It.Is<PropertyValidatorContext>(c => (string)c.PropertyValue == "Foo")));
+#pragma warning restore 618
 
 		}
 		[Fact]
@@ -155,7 +157,9 @@ namespace FluentValidation.Tests {
 
 			await builder.Rule.ValidateAsync(new ValidationContext<Person>(person, new PropertyChain(), new DefaultValidatorSelector()), new CancellationToken());
 
+#pragma warning disable 618
 			validator.Verify(x => x.Validate(It.Is<PropertyValidatorContext>(c => (string)c.PropertyValue == "Foo")));
+#pragma warning restore 618
 
 
 		}

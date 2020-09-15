@@ -32,6 +32,7 @@ namespace FluentValidation {
 	/// </summary>
 	/// <typeparam name="T">The type of the object being validated</typeparam>
 	public abstract class AbstractValidator<T> : IValidator<T>, IEnumerable<IValidationRule> {
+		//TODO: For FV10 change IValidationRule to IValidationRule<T>
 		internal TrackingCollection<IValidationRule> Rules { get; } = new TrackingCollection<IValidationRule>();
 		private Func<CascadeMode> _cascadeMode = () => ValidatorOptions.Global.CascadeMode;
 
@@ -90,7 +91,9 @@ namespace FluentValidation {
 			EnsureInstanceNotNull(context.InstanceToValidate);
 
 			foreach (var rule in Rules) {
+#pragma warning disable 618
 				var failures = rule.Validate(context);
+#pragma warning restore 618
 
 				foreach (var validationFailure in failures.Where(failure => failure != null)) {
 					result.Errors.Add(validationFailure);
@@ -136,7 +139,9 @@ namespace FluentValidation {
 
 			foreach (var rule in Rules) {
 				cancellation.ThrowIfCancellationRequested();
+#pragma warning disable 618
 				var failures = await rule.ValidateAsync(context, cancellation);
+#pragma warning restore 618
 
 				foreach (var failure in failures.Where(f => f != null)) {
 					result.Errors.Add(failure);

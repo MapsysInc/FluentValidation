@@ -130,7 +130,9 @@ namespace FluentValidation.Internal {
 					var newPropertyContext = new PropertyValidatorContext(newContext, this, newContext.PropertyChain.ToString(), valueToValidate);
 					newPropertyContext.MessageFormatter.AppendArgument("CollectionIndex", index);
 
+#pragma warning disable 618
 					return await validator.ValidateAsync(newPropertyContext, cancellation);
+#pragma warning restore 618
 				});
 
 				var results = new List<ValidationFailure>();
@@ -222,7 +224,9 @@ namespace FluentValidation.Internal {
 
 					var newPropertyContext = new PropertyValidatorContext(newContext, this, newContext.PropertyChain.ToString(), valueToValidate);
 					newPropertyContext.MessageFormatter.AppendArgument("CollectionIndex", index);
+#pragma warning disable 618
 					results.AddRange(validator.Validate(newPropertyContext));
+#pragma warning restore 618
 				}
 			}
 
