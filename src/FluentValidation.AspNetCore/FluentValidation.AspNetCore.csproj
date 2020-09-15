@@ -6,6 +6,9 @@
     <Product>FluentValidation.AspNetCore</Product>
     <Description>AspNetCore integration for FluentValidation</Description>
     <PackageReleaseNotes>
+Changes in 9.3.0:
+* Support for .net 5
+
 Changes in 9.0.0:
 * Compatibility with FluentValidation 9.0
 * FluentValidationModelValidatorProvider and FluentValidationModelValidator are now public.
