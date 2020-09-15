@@ -397,7 +397,7 @@ namespace FluentValidation.Internal {
 		/// <param name="propertyName"></param>
 		/// <param name="cancellation"></param>
 		/// <returns></returns>
-		protected virtual async Task<IEnumerable<ValidationFailure>> InvokePropertyValidatorAsync(ValidationContext<T> context, IPropertyValidator<T,TProperty> validator, string propertyName, Lazy<TProperty> accessor, CancellationToken cancellation) {
+		private protected virtual async Task<IEnumerable<ValidationFailure>> InvokePropertyValidatorAsync(ValidationContext<T> context, IPropertyValidator<T,TProperty> validator, string propertyName, Lazy<TProperty> accessor, CancellationToken cancellation) {
 			var propertyContext = new PropertyValidatorContext<T,TProperty>(context, this, propertyName, accessor);
 			if (!validator.Options.InvokeCondition(propertyContext)) return Enumerable.Empty<ValidationFailure>();
 			if (!await validator.Options.InvokeAsyncCondition(propertyContext, cancellation)) return Enumerable.Empty<ValidationFailure>();
@@ -407,7 +407,7 @@ namespace FluentValidation.Internal {
 		/// <summary>
 		/// Invokes a property validator using the specified validation context.
 		/// </summary>
-		protected virtual IEnumerable<ValidationFailure> InvokePropertyValidator(ValidationContext<T> context, IPropertyValidator<T,TProperty> validator, string propertyName, Lazy<TProperty> accessor) {
+		private protected virtual IEnumerable<ValidationFailure> InvokePropertyValidator(ValidationContext<T> context, IPropertyValidator<T,TProperty> validator, string propertyName, Lazy<TProperty> accessor) {
 			var propertyContext = new PropertyValidatorContext<T,TProperty>(context, this, propertyName, accessor);
 			if (!validator.Options.InvokeCondition(propertyContext)) return Enumerable.Empty<ValidationFailure>();
 			return validator.Validate(propertyContext);
@@ -498,11 +498,11 @@ namespace FluentValidation.Internal {
 		}
 
 		void IValidationRule.ApplyCondition(Func<PropertyValidatorContext, bool> predicate, ApplyConditionTo applyConditionTo) {
-			throw new NotSupportedException();
+			ApplyCondition(context => predicate(GenericContextToNonGeneric(context)), applyConditionTo);
 		}
 
 		void IValidationRule.ApplyAsyncCondition(Func<PropertyValidatorContext, CancellationToken, Task<bool>> predicate, ApplyConditionTo applyConditionTo) {
-			throw new NotSupportedException();
+			ApplyAsyncCondition((context, ct) => predicate(GenericContextToNonGeneric(context), ct), applyConditionTo);
 		}
 
 		void IValidationRule.ApplySharedCondition(Func<IValidationContext, bool> condition) {
@@ -512,6 +512,14 @@ namespace FluentValidation.Internal {
 		void IValidationRule.ApplySharedAsyncCondition(Func<IValidationContext, CancellationToken, Task<bool>> condition) {
 			ApplySharedAsyncCondition(condition);
 		}
+
+#pragma warning disable 612
+		private static PropertyValidatorContext GenericContextToNonGeneric(PropertyValidatorContext<T,TProperty> context) {
+			var lazy = new Lazy<object>(() => context.Accessor.Value, LazyThreadSafetyMode.None);
+			return new PropertyValidatorContext(context.ParentContext, context.Rule, context.PropertyName, lazy);
+		}
+#pragma warning restore 612
+
 		#endregion
 	}
 }

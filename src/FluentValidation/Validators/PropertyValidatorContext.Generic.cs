@@ -25,6 +25,9 @@ namespace FluentValidation.Validators {
 		private TProperty _propertyValue;
 		private Lazy<TProperty> _propertyValueAccessor;
 
+		[Obsolete]
+		internal Lazy<TProperty> Accessor => _propertyValueAccessor;
+
 		public ValidationContext<T> ParentContext { get; private set; }
 		public PropertyRule<T, TProperty> Rule { get; private set; }
 		public string PropertyName { get; private set; }
